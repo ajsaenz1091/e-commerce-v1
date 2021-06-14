@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
+import Header from '../Components/header/Header'
 import Home from './Home'
 import Shop from './Shop'
 import Cart from './Cart'
-import Hats from './hats/Hats'
 
 const App = () => {
 
@@ -12,6 +12,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <Header />
       <Switch>
         <Route exact path="/cart">
           <Cart />
