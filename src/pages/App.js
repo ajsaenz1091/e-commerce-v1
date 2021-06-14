@@ -4,6 +4,7 @@ import './App.css';
 import Home from './Home'
 import Shop from './Shop'
 import Cart from './Cart'
+import Hats from './hats/Hats'
 
 const App = () => {
 
@@ -12,10 +13,13 @@ const App = () => {
   return (
     <div className="App">
       <Switch>
-        <Route path="/cart">
+        <Route exact path="/shop/hats">
+          <Hats />
+        </Route>
+        <Route exact path="/cart">
           <Cart />
         </Route>
-        <Route path="/shop">
+        <Route exact path="/shop">
           <Shop />
         </Route>
         <Route exact path="/">
