@@ -1,14 +1,12 @@
 import React from 'react'
-
+import CollectionItem from '../collection-item/CollectionItem'
 import './Collection.styles.scss'
 
 
 const Collection = ({title, items}) => {
 
     const renderCollectionItems = () => {
-        return items.map((item) => {
-           return <div key={item.id}>{item.name}</div> // return <CollectionItem />
-        })
+        return items.filter((item,idx) => idx < 4).map(({id, ...itemProps}) => <CollectionItem key={id} {...itemProps}/>)
     }
 
     return (
