@@ -3,10 +3,10 @@ import CollectionItem from '../collection-item/CollectionItem'
 import './Collection.styles.scss'
 
 
-const Collection = ({title, items}) => {
+const Collection = ({title, items, addItemToCart}) => {
 
     const renderCollectionItems = () => {
-        return items.filter((item,idx) => idx < 4).map(({id, ...itemProps}) => <CollectionItem key={id} {...itemProps}/>)
+        return items.filter((item,idx) => idx < 4).map((item) => <CollectionItem key={item.id} item={item} addItemToCart={addItemToCart} />)
     }
 
     return (

@@ -1,5 +1,5 @@
-import React from 'react';
-import Directory from '../Components/Directory/Directory'
+import React, {useState, useEffect } from 'react';
+import Directory from '../../Components/Directory/Directory'
 import './Home.styles.scss'
 
 const Home = () => {
