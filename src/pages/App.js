@@ -4,7 +4,7 @@ import './App.css';
 import Header from '../Components/header/Header'
 import Home from './Home'
 import Shop from './Shop'
-import Cart from './Cart'
+import Cart from './cart-page/Cart'
 
 const App = () => {
 
