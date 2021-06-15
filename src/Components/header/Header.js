@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom'
 
 import { ReactComponent as Logo } from '../../assets/crown.svg'
 
+import CartIcon from '../cart-icon/CartIcon'
+
 import './Header.styles.scss'
 
 const Header = () => {
@@ -16,9 +18,10 @@ const Header = () => {
                 <Link to="/shop" className="option">
                     SHOP
                 </Link>
-                <Link to="/shop" className="option">
+                <Link to="/cart" className="option">
                     Cart
                 </Link>
+                <CartIcon />
             </div>
         </div>
     )
