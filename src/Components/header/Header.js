@@ -7,7 +7,7 @@ import CartIcon from '../cart-icon/CartIcon'
 
 import './Header.styles.scss'
 
-const Header = () => {
+const Header = ({itemCount}) => {
 
     return (
         <div className="header">
@@ -21,7 +21,7 @@ const Header = () => {
                 <Link to="/cart" className="option">
                     Cart
                 </Link>
-                <CartIcon />
+                <CartIcon itemCount={itemCount}/>
             </div>
         </div>
     )

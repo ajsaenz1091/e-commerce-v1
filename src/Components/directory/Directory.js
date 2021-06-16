@@ -10,7 +10,7 @@ const Directory = () => {
 
     const renderMenuItems = () => {
         return sections.map((section, idx) => {
-            return <MenuItem key={idx} {...section} />
+            return <MenuItem  key={idx} {...section} />
         })
     }
 

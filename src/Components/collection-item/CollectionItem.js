@@ -6,15 +6,16 @@ import './CollectionItem.styles.scss'
 
 
 const CollectionItem = ({item, addItemToCart}) => {
-    const {imageUrl, price, name} = item
+    const {id, imageUrl, price, name, quantity} = item
 
     const handleClick = () => {
-        const itemData = {
+        const itemToAdd = {
             name:name,
             imageUrl:imageUrl,
-            price:price
+            price:price,
+            quantity: quantity + 1
         }
-        addItemToCart(itemData)
+        addItemToCart(itemToAdd)
     }
 
     return (
@@ -26,7 +27,7 @@ const CollectionItem = ({item, addItemToCart}) => {
             }}/>
                <div className="collection-footer">
                    <span className="name">{name}</span>
-                   <span className="price">{price}</span> 
+                   <span className="price">${price}</span> 
                </div> 
                <CustomButton onClick={handleClick} inverted> Add to cart </CustomButton>
         </div>
