@@ -5,6 +5,7 @@ import Header from '../Components/header/Header'
 import Home from './home-page/Home'
 import Shop from './shop-page/Shop'
 import Cart from './cart-page/Cart'
+import CartItem from '../Components/cart-item/CartItem';
 
 const App = () => {
 
@@ -16,6 +17,9 @@ const App = () => {
   const [cartItems, setCartItems] = useState([])
   const [cartItemsResource, setCartUrl] = useState('http://localhost:3001/cartItems')
   const [itemCount, setItemCount] = useState(0)
+
+  // state variable to pass to Shop to know which collection to display
+  const [collecId, setCollecId] = useState(0)
 
   // Fetch to populate collections
   useEffect(() => {
@@ -29,7 +33,13 @@ const App = () => {
     fetch(cartItemsResource)
     .then(res => res.json())
     .then(data => setCartItems(data))
+    setItemCount(calculateItemsInCart)
   }, [itemCount])
+
+  // Update Item count 
+  useEffect(() => {
+    setItemCount(calculateItemsInCart())
+  }, [cartItems])
 
   //Function to check if item already exists in cartItems
 
@@ -50,15 +60,23 @@ const App = () => {
   //   setItemCount(cartItems.length)
   // }
 
+  // Function to calculate amount of item in cart
+
+  const calculateItemsInCart = () => {
+    return cartItems.reduce((acc,cartItem) => {
+      return acc + cartItem.quantity
+    },0)
+  }
+
   // function to add itmes to cart
-  const addItemToCart = (itemToAdd) => {
+  const addItemToCart = async (itemToAdd) => {
 
     const existingItem = cartItems.find(cartItem => {
       return cartItem.name === itemToAdd.name
     })
 
     if(existingItem) {
-      setItemCount(cartItems.length)
+      // setItemCount(cartItems.length)
       const updatedCartItems = cartItems.map(cartItem => {
         return cartItem.name === itemToAdd.name ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
       })
@@ -74,6 +92,8 @@ const App = () => {
         })
       }
       fetch(`${cartItemsResource}/${existingItem.id}`, configObj)
+      // const itemsInCart = calculateItemsInCart()
+      // setItemCount(itemsInCart)
     }else {
 
       const configObj = {
@@ -91,8 +111,10 @@ const App = () => {
 
       const updateCartItems =  (postedItem) => {
         setCartItems([...cartItems,postedItem])
-    }
 
+      // const itemsInCart = calculateItemsInCart()
+      // setItemCount(itemsInCart)
+    }
 
     
     
@@ -101,7 +123,7 @@ const App = () => {
 }
 
   // function to remove items from cart
-  const removeFromCart = (id) => {
+   const removeFromCart = async (id) => {
     const url = `http://localhost:3001/cartItems/${id}`
     console.log('removed')
 
@@ -113,20 +135,28 @@ const App = () => {
       }
     }
 
-    fetch(url, configObj)
+    await fetch(url, configObj)
 
     removeItem(id)
+
+    // let itemsInCart = calculateItemsInCart()
+    // setItemCount(itemsInCart)
   }
 
   // Update front end when removing items from cart individually
   const removeItem = (id) => {
-    if(itemCount > 0 ) {
-      setItemCount(cartItems.length)
-    }
+    // if(itemCount > 0 ) {
+    //   setItemCount(cartItems.length)
+    // }
     let updatedCartItems = cartItems.filter(item => {
       return item.id !== id
     })
     setCartItems(updatedCartItems)
+  }
+
+  // FUNCTION TO SET COLLECID IN STATE
+  const setCollectionId = (id) => {
+    setCollecId(id)
   }
 
   return (
@@ -137,10 +167,10 @@ const App = () => {
           <Cart cartItems={cartItems} removeFromCart={removeFromCart}/>
         </Route>
         <Route path="/shop">
-          <Shop collections={collections} addItemToCart={addItemToCart}/>
+          <Shop collecId={collecId} collections={collections} addItemToCart={addItemToCart}/>
         </Route>
         <Route exact path="/">
-          <Home />
+          <Home setCollectionId={setCollectionId} />
         </Route>
       </Switch>
     </div>

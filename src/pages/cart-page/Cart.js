@@ -8,14 +8,6 @@ import CustomButton from '../../Components/custom-button/CustomButton'
 
 const Cart = ({cartItems, removeFromCart}) => {
 
-    // const [cartItems, setCartItems] = useState([])
-
-    // useEffect(() => {
-    //   const url = 'http://localhost:3001/cartItems'
-    //   fetch(url)
-    //   .then(res => res.json())
-    //   .then(data => setCartItems(data))
-    // }, [])
 
     const renderCartItems = () => {
       return cartItems.map(item => <CartItem key={item.id} item={item} removeFromCart={removeFromCart}/>)

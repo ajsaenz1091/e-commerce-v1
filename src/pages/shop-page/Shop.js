@@ -2,9 +2,8 @@ import React, {useState, useEffect} from 'react';
 
 import Collection from '../../Components/collection/Collection'
 
-const Shop = ({collections, addItemToCart, match}) => {
+const Shop = ({collections, addItemToCart, collecId}) => {
 
-  const [collecId, setCollecId] = useState(0)
 
     // const [collections, setCollection] = useState([])
     // const [url, setUrl] = useState('http://localhost:3001/shopData')
@@ -21,14 +20,14 @@ const Shop = ({collections, addItemToCart, match}) => {
 
     const renderCollection = () => {
       return collections.filter(collection => {
-        return collection.id === 1
+        return collection.id === collecId
       }).map(collection => <Collection key={collection.id} {...collection} addItemToCart={addItemToCart}/>)
     }
 
     return (
         <div className='shop-page'>
-          {renderCollections()}
-            {/*{renderCollection()}*/}
+          {/*{renderCollections()}*/}
+            {renderCollection()}
         </div>
     )
 }
