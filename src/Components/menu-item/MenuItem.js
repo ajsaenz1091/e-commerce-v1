@@ -3,7 +3,7 @@ import { withRouter } from 'react-router'
 import './MenuItem.styles.scss'
 
 
-const MenuItem = ({imageUrl, linkUrl, title, history, match, id, setCollectionId}) => {
+const MenuItem = ({imageUrl,title, linkUrl, history, id, setCollectionId}) => {
 
     const handleItemId = () => {
         setCollectionId(id)
@@ -11,7 +11,7 @@ const MenuItem = ({imageUrl, linkUrl, title, history, match, id, setCollectionId
 
     return(
         <div  className="menu-item" onClick={() => {
-            history.push(`${match.url}${linkUrl}`)
+            history.push(`${linkUrl}`)
         }}>
             <div className="background-image" style={{
             backgroundImage: `url(${imageUrl})`
@@ -24,4 +24,4 @@ const MenuItem = ({imageUrl, linkUrl, title, history, match, id, setCollectionId
     )
 }
 
-export default withRouter(MenuItem)
+export default withRouter(MenuItem) // HOC that takes Menu Item as it's arguement to give back the same component with added router properties. location, match, history

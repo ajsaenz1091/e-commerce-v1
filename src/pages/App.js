@@ -5,7 +5,6 @@ import Header from '../Components/header/Header'
 import Home from './home-page/Home'
 import Shop from './shop-page/Shop'
 import Cart from './cart-page/Cart'
-import CartItem from '../Components/cart-item/CartItem';
 
 const App = () => {
 

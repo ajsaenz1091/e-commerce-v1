@@ -9,8 +9,8 @@ const Directory = ({setCollectionId}) => {
     const [sections, setSections] = useState(sectionsData)
 
     const renderMenuItems = () => {
-        return sections.map((section, idx) => {
-            return <MenuItem  key={idx} {...section} setCollectionId={setCollectionId} />
+        return sections.map((section) => {
+            return <MenuItem  key={section.id} {...section} setCollectionId={setCollectionId} />
         })
     }
 
