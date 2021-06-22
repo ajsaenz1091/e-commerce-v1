@@ -2,7 +2,7 @@
 
 In the project directory run npm install to download all dependecies
 
-### `yarn run dev`
+### `npm install`
 
 
 ##  Script To Start App
