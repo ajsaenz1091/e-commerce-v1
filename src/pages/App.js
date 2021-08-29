@@ -10,15 +10,17 @@ const App = () => {
 
   // State variables that shop-page will use
   const [collections, setCollection] = useState([])
-  const [shopDataResource, setShopUrl] = useState('http://localhost:3001/shopData')
+  const [shopDataResource, setShopUrl] = useState('http://localhost:3001/categories')
 
   // State variables to pass to cart-page
+  const [cartId, setCartId] = useState(0)
   const [cartItems, setCartItems] = useState([])
-  const [cartItemsResource, setCartUrl] = useState('http://localhost:3001/cartItems')
+  const [cartItemsResource, setCartUrl] = useState('http://localhost:3001/carts/1')
   const [itemCount, setItemCount] = useState(0)
 
   // state variable to pass to Shop to know which collection to display
   const [collecId, setCollecId] = useState(0)
+  const [searchTerm , setTerm] = useState("")
 
   // Fetch to populate collections
   useEffect(() => {
@@ -31,7 +33,10 @@ const App = () => {
   useEffect(() => {
     fetch(cartItemsResource)
     .then(res => res.json())
-    .then(data => setCartItems(data))
+    .then(data => {
+      setCartId(data.id)
+      setCartItems(data.cart_items)
+    })
     setItemCount(calculateItemsInCart)
   }, [itemCount])
 
@@ -39,27 +44,6 @@ const App = () => {
   useEffect(() => {
     setItemCount(calculateItemsInCart())
   }, [cartItems])
-
-  //Function to check if item already exists in cartItems
-
-  // const checkIfItemInCart = (itemToAdd) => {
-  //   console.log(cartItems)
-  //   // Checks if the item exists in cartItems
-  //   const existingItem = cartItems.find(cartItem => {
-  //       return cartItem.id === itemToAdd.id
-  //   })
-  //   console.log(existingItem)
-
-  //   if(existingItem) {
-  //     setItemCount(cartItems.length)
-  //     return cartItems.map(cartItem => {
-  //       return cartItem.id === itemToAdd.id ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
-  //     })
-  //   }
-  //   setItemCount(cartItems.length)
-  // }
-
-  // Function to calculate amount of item in cart
 
   const calculateItemsInCart = () => {
     return cartItems.reduce((acc,cartItem) => {
@@ -71,13 +55,14 @@ const App = () => {
   const addItemToCart = async (itemToAdd) => {
 
     const existingItem = cartItems.find(cartItem => {
-      return cartItem.name === itemToAdd.name
+      return cartItem.item.name === itemToAdd.name
     })
+    console.log(existingItem)
 
     if(existingItem) {
       // setItemCount(cartItems.length)
       const updatedCartItems = cartItems.map(cartItem => {
-        return cartItem.name === itemToAdd.name ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
+        return cartItem.item.name === itemToAdd.name ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
       })
       setCartItems(updatedCartItems)
       const configObj = {
@@ -90,7 +75,7 @@ const App = () => {
           quantity: existingItem.quantity + 1
         })
       }
-      fetch(`${cartItemsResource}/${existingItem.id}`, configObj)
+      fetch(`http://localhost:3001/cart_items/${existingItem.id}`, configObj)
       // const itemsInCart = calculateItemsInCart()
       // setItemCount(itemsInCart)
     }else {
@@ -101,10 +86,10 @@ const App = () => {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(itemToAdd)
+        body: JSON.stringify({...itemToAdd, quantity: 1})
       }
   
-      fetch(cartItemsResource, configObj)
+      fetch("http://localhost:3001/cart_items", configObj)
       .then(res => res.json())
       .then(postedItem => updateCartItems(postedItem))
 
@@ -123,8 +108,7 @@ const App = () => {
 
   // function to remove items from cart
    const removeFromCart = async (id) => {
-    const url = `http://localhost:3001/cartItems/${id}`
-    console.log('removed')
+    const url = `http://localhost:3001/cart_items/${id}`
 
     const configObj = {
       method: 'DELETE',
@@ -158,6 +142,21 @@ const App = () => {
     setCollecId(id)
   }
 
+  const handleSearch = (input) => {
+      setTerm(input)
+  }
+
+  const searchedCollections = collections.map(collection => {
+    return {...collection, items: collection.items.filter(item => {
+      return item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    })}
+  })
+
+  // const [searchedCollections, setSearched] = useState(searchedColletions)
+  // const searchedCollections = collections.filter(collection => {
+  //   return searchTerm === "" ? collection : collection.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // })
+
   return (
     <div className="App">
       <Header itemCount={itemCount}/>
@@ -166,7 +165,7 @@ const App = () => {
           <Cart cartItems={cartItems} removeFromCart={removeFromCart}/>
         </Route>
         <Route path="/shop">
-          <Shop collecId={collecId} collections={collections} addItemToCart={addItemToCart}/>
+          <Shop collecId={collecId} cartId={cartId} collections={searchedCollections} searchTerm={searchTerm} handleSearch={handleSearch} addItemToCart={addItemToCart}/>
         </Route>
         <Route exact path="/">
           <Home setCollectionId={setCollectionId} />

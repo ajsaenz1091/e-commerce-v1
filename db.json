@@ -1,5 +1,13 @@
 {
-  "cartItems": [],
+  "cartItems": [
+    {
+      "name": "Brown Brim",
+      "img_url": "https://i.ibb.co/ZYW3VTp/brown-brim.png",
+      "price": 25,
+      "quantity": 1,
+      "id": 1
+    }
+  ],
   "shopData": [
     {
       "id": 1,

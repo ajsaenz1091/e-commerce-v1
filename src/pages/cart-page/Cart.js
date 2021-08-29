@@ -10,7 +10,7 @@ const Cart = ({cartItems, removeFromCart}) => {
 
 
     const renderCartItems = () => {
-      return cartItems.map(item => <CartItem key={item.id} item={item} removeFromCart={removeFromCart}/>)
+      return cartItems.map(cartItem => <CartItem key={cartItem.id} cartItem={cartItem} removeFromCart={removeFromCart}/>)
     }
 
     return (

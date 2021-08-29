@@ -5,15 +5,17 @@ import CustomButton from '../custom-button/CustomButton'
 import './CollectionItem.styles.scss'
 
 
-const CollectionItem = ({item, addItemToCart}) => {
-    const {id, imageUrl, price, name, quantity} = item
+const CollectionItem = ({item, addItemToCart, cartId}) => {
+    const {id, img_url, price, name, quantity} = item
 
     const handleClick = () => {
         const itemToAdd = {
             name:name,
-            imageUrl:imageUrl,
-            price:price,
-            quantity: quantity + 1
+            // img_url:img_url,
+            // price:price,
+            // quantity: quantity + 1
+            cart_id: cartId,
+            item_id: id
         }
         addItemToCart(itemToAdd)
     }
@@ -23,7 +25,7 @@ const CollectionItem = ({item, addItemToCart}) => {
             <div 
             className="image"
             style={{
-                backgroundImage: `url(${imageUrl})`
+                backgroundImage: `url(${img_url})`
             }}/>
                <div className="collection-footer">
                    <span className="name">{name}</span>

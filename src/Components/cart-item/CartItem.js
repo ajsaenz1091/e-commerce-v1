@@ -4,18 +4,18 @@ import CustomButton from '../custom-button/CustomButton'
 import './CardItem.styles.scss'
 
 
-const CartItem = ({ item, removeFromCart }) => {
-    const {imageUrl, price, name, quantity } = item
+const CartItem = ({ cartItem, removeFromCart }) => {
+    const {img_url, price, name, quantity } = cartItem.item
 
     const handleClick = () => {
-        removeFromCart(item.id)
+        removeFromCart(cartItem.id)
     }
     return (
         <div className="cart-item">
-            <img src={imageUrl} alt="item" />
+            <img src={img_url} alt="item" />
             <div className="item-details">
                 <span className="name">{name}</span>
-                <span className="price">{quantity} x ${price}</span>
+                <span className="price">{cartItem.quantity} x ${price}</span>
             </div>
             <CustomButton onClick={handleClick} inverted> Remove </CustomButton>
         </div>

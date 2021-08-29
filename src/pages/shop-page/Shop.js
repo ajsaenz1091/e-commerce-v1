@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import Collection from '../../Components/collection/Collection'
 
-const Shop = ({collections, addItemToCart, collecId}) => {
-
+const Shop = ({collections, addItemToCart, collecId, handleSearch, searchTerm, cartId}) => {
 
     // const [collections, setCollection] = useState([])
     // const [url, setUrl] = useState('http://localhost:3001/shopData')
@@ -15,7 +14,7 @@ const Shop = ({collections, addItemToCart, collecId}) => {
     // }, [url])
 
     const renderCollections = () => {
-      return collections.map(collection => <Collection key={collection.id} {...collection} addItemToCart={addItemToCart}/>)
+      return collections.map(collection => <Collection key={collection.id} cartId={cartId} {...collection} addItemToCart={addItemToCart}/>)
     }
 
     const renderCollection = () => {
@@ -24,10 +23,16 @@ const Shop = ({collections, addItemToCart, collecId}) => {
       }).map(collection => <Collection key={collection.id} {...collection} addItemToCart={addItemToCart}/>)
     }
 
+    const handleChange = (e) => {
+      
+      handleSearch(e.target.value)
+    }
+
     return (
         <div className='shop-page'>
-          {/*{renderCollections()}*/}
-            {renderCollection()}
+          <input type="text" onChange={handleChange} value={searchTerm} />
+          {renderCollections()}
+            {/*{renderCollection()}*/}
         </div>
     )
 }
