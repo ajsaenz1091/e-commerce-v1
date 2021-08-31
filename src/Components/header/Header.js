@@ -15,6 +15,12 @@ const Header = ({itemCount}) => {
                 <Logo className="logo"/>
             </Link>
             <div className="options">
+                <Link to="/signup" className="option">
+                    SIGN UP
+                </Link>
+                <Link to="/login" className="option">
+                    LOGIN
+                </Link>
                 <Link to="/shop" className="option">
                     SHOP
                 </Link>

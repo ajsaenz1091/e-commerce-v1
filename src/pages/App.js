@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
 import Header from '../Components/header/Header'
+import SignupLogin from './signup-login-page/SignupLogin'
 import Home from './home-page/Home'
 import Shop from './shop-page/Shop'
 import Cart from './cart-page/Cart'
@@ -161,6 +162,9 @@ const App = () => {
     <div className="App">
       <Header itemCount={itemCount}/>
       <Switch>
+        <Route exact path="/signup">
+          <SignupLogin />
+        </Route>
         <Route exact path="/cart">
           <Cart cartItems={cartItems} removeFromCart={removeFromCart}/>
         </Route>

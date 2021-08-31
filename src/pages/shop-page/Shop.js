@@ -13,9 +13,9 @@ const Shop = ({collections, addItemToCart, collecId, handleSearch, searchTerm, c
     //   .then(data => setCollection(data))
     // }, [url])
 
-    const renderCollections = () => {
-      return collections.map(collection => <Collection key={collection.id} cartId={cartId} {...collection} addItemToCart={addItemToCart}/>)
-    }
+    // const renderCollections = () => {
+    //   return collections.map(collection => <Collection key={collection.id} cartId={cartId} {...collection} addItemToCart={addItemToCart}/>)
+    // }
 
     const renderCollection = () => {
       return collections.filter(collection => {
@@ -31,8 +31,8 @@ const Shop = ({collections, addItemToCart, collecId, handleSearch, searchTerm, c
     return (
         <div className='shop-page'>
           <input type="text" onChange={handleChange} value={searchTerm} />
-          {renderCollections()}
-            {/*{renderCollection()}*/}
+          {/*renderCollections()*/}
+          {renderCollection()}
         </div>
     )
 }
