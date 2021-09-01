@@ -1,5 +1,8 @@
 import {useState} from 'react';
+import CustomButton from '../custom-button/CustomButton';
 import FormInput from '../form-input/FormInput'
+
+import { signInWithGoogle } from '../../firebase/firebase.utils'
 
 import './Signup.styles.scss'
 
@@ -42,9 +45,12 @@ const Signup = () => {
                     label='password'
                     required
                 />
-                <label>PASSWORD</label>
 
-                <input type="submit" value='Submit Form'/>
+                <CustomButton className='signup-login-button' type='submit' > Sing in </CustomButton>
+                <CustomButton style={{backgroundColor: '#0088ff', color: 'white'}} className='signup-login-button' onClick={signInWithGoogle} > 
+                    {' '}
+                    Sign in with google {' '}
+                </CustomButton>
             </form>
         </div>
     )

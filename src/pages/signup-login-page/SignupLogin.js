@@ -9,7 +9,7 @@ const SignupLogin = () => {
     return(
         <div className="div signup-login">
             <Signup />
-            <Login />
+            {/*<Login />*/}
         </div>
     )
 }
