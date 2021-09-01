@@ -87,7 +87,7 @@ const App = () => {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({...itemToAdd, quantity: 1})
+        body: JSON.stringify({...itemToAdd, cart_id: cartId, quantity: 1})
       }
   
       fetch("http://localhost:3001/cart_items", configObj)
