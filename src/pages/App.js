@@ -7,7 +7,12 @@ import Home from './home-page/Home'
 import Shop from './shop-page/Shop'
 import Cart from './cart-page/Cart'
 
+import {auth} from '../firebase/firebase.utils'
+
 const App = () => {
+
+  //Store current user in state
+  const [currentUser, setCurrentUser] = useState(null)
 
   // State variables that shop-page will use
   const [collections, setCollection] = useState([])
@@ -22,6 +27,35 @@ const App = () => {
   // state variable to pass to Shop to know which collection to display
   const [collecId, setCollecId] = useState(0)
   const [searchTerm , setTerm] = useState("")
+
+  //Handle User signup and login
+
+  const handleUserLoginAndSignup = (data) => {
+    // data.errors ? setErrors(data.errors) : setCurrentUser(data.user)
+    // if(!data.errors) {
+    //   history.push('/home')
+    //   setErrors([])
+    // }
+  }
+
+  //sets up communication between this app and firebase
+  let unsubscribeFromAuth = null
+
+  
+  useEffect(() => {
+    unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      if(user) {
+        setCurrentUser(user);
+      }else{
+        setCurrentUser(null)
+      }
+
+      console.log(user);
+    })
+
+    unsubscribeFromAuth();
+  }, [])
+
 
   // Fetch to populate collections
   useEffect(() => {
@@ -160,10 +194,10 @@ const App = () => {
 
   return (
     <div className="App">
-      <Header itemCount={itemCount}/>
+      <Header currentUser={currentUser} setCurrentUser={setCurrentUser} itemCount={itemCount}/>
       <Switch>
         <Route exact path="/signup">
-          <SignupLogin />
+          <SignupLogin handleUserLoginAndSignup={handleUserLoginAndSignup}/>
         </Route>
         <Route exact path="/cart">
           <Cart cartItems={cartItems} removeFromCart={removeFromCart}/>

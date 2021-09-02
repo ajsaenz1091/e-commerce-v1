@@ -1,18 +1,17 @@
 import {useState} from 'react';
+import FormInput from '../form-input/FormInput';
 import CustomButton from '../custom-button/CustomButton';
-import FormInput from '../form-input/FormInput'
-
-import { signInWithGoogle } from '../../firebase/firebase.utils'
 
 import './Signup.styles.scss'
 
-const Signup = () => {
+const Signup = ({handleUserLoginAndSignup}) => {
     const [userCredentials, setCredentials] = useState({
+        username: '',
         email: '',
         password: ''
       });
 
-    const { email, password } = userCredentials;
+    const { username, email, password } = userCredentials;
 
     const handleChange = (e) => {
         setCredentials({...userCredentials, [e.target.name]: e.target.value})
@@ -20,15 +19,35 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('submitted form')
+        console.log("WTF")
+        let config = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(userCredentials)
+        }
+        fetch('http://localhost:3001/users', config)
+        .then(resp => resp.json())
+        .then(data => console.log(data))
+        // .then(data => handleUserLoginAndSignup(data))
     }
 
     return(
-        <div className='sign-in'>
-            <h2>I have an account already</h2>
-            <span>Sign in with your email and password</span>
+        <div className='sign-up'>
+            <h2>Create an account</h2>
+            <span>Sign up with your email and password</span>
 
-            <form onSubmit={handleSubmit}>
+            <form className='sign-up-form' onSubmit={handleSubmit}>
+                <FormInput 
+                    handleChange={handleChange} 
+                    name="username" 
+                    type="text" 
+                    value={username} 
+                    label='name'
+                    required 
+                />
                 <FormInput
                     name='email'
                     type='email'
@@ -45,12 +64,7 @@ const Signup = () => {
                     label='password'
                     required
                 />
-
-                <CustomButton className='signup-login-button' type='submit' > Sing in </CustomButton>
-                <CustomButton style={{backgroundColor: '#0088ff', color: 'white'}} className='signup-login-button' onClick={signInWithGoogle} > 
-                    {' '}
-                    Sign in with google {' '}
-                </CustomButton>
+                <CustomButton className='signup-login-button' type='submit' > Sing up </CustomButton>
             </form>
         </div>
     )

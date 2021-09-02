@@ -1,0 +1,23 @@
+.sign-in {
+    width: 27vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-login-button {
+    min-width: 112px;
+    height: 18px;
+    background-color: black;
+    color: white;
+    font-family: 'Open Sans Condensed';
+    font-weight: bolder;
+    border: none;
+    cursor: pointer;
+    margin-left: 4px;
+
+    &:hover {
+        background-color: white;
+        color: black;
+        border: 1px solid black;
+    }
+}

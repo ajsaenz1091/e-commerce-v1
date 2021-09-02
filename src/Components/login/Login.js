@@ -1,34 +1,59 @@
 import {useState} from 'react';
+import CustomButton from '../custom-button/CustomButton';
+import FormInput from '../form-input/FormInput'
+
+import { signInWithGoogle } from '../../firebase/firebase.utils'
 
 import './Login.styles.scss'
 
-const Login = () => {
-    const [form, setForm] = useState({})
+const Signup = () => {
+    const [userCredentials, setCredentials] = useState({
+        email: '',
+        password: ''
+      });
+
+    const { email, password } = userCredentials;
 
     const handleChange = (e) => {
-        setForm({...form, [e.target.name]: e.target.value})
+        setCredentials({...userCredentials, [e.target.name]: e.target.value})
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('submitted form')
+        // fetch('login')
     }
 
     return(
-        <div className='log-in'>
-            <h2>Create an account</h2>
+        <div className='sign-in'>
+            <h2>I have an account already</h2>
             <span>Sign in with your email and password</span>
 
             <form onSubmit={handleSubmit}>
-                <input onChange={handleChange} name="email" type="email" value={form.email} required />
-                <label>EMAIL</label>
-                <input onChange={handleChange} name="password" type="password" value={form.password} required />
-                <label>PASSWORD</label>
+                <FormInput
+                    name='email'
+                    type='email'
+                    handleChange={handleChange}
+                    value={email}
+                    label='email'
+                    required
+                />
+                <FormInput
+                    name='password'
+                    type='password'
+                    value={password}
+                    handleChange={handleChange}
+                    label='password'
+                    required
+                />
 
-                <input type="submit" value='Submit Form'/>
+                <CustomButton className='signup-login-button' type='submit' > Sing in </CustomButton>
+                <CustomButton style={{backgroundColor: '#0088ff', color: 'white'}} className='signup-login-button' onClick={signInWithGoogle} > 
+                    {' '}
+                    Sign in with google {' '}
+                </CustomButton>
             </form>
         </div>
     )
 }
 
-export default Login;
+export default Signup;

@@ -1,15 +1,16 @@
 import React from 'react'
-import Signup from '../../Components/signup/Signup'
+import Signup from '../../Components/login/Login'
 import './SignupLogin.styles.scss'
-import Login from '../../Components/login/Login'
+import Login from '../../Components/signup/Signup'
 
 
 const SignupLogin = () => {
 
     return(
-        <div className="div signup-login">
+        <div className="signup-login">
             <Signup />
-            {/*<Login />*/}
+           <h1>Don't have one? Then... ===></h1>
+            <Login />
         </div>
     )
 }
