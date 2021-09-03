@@ -19,17 +19,17 @@ const App = () => {
   const [errors, setErrors] = useState([]);
 
   //Store current user and cart in state
-  const [currentCart, setCurrentCart] = useState({})
+  // const [currentCart, setCurrentCart] = useState({})
   const [currentUser, setCurrentUser] = useState(null)
 
   // State variables that shop-page will use
   const [collections, setCollection] = useState([])
-  const [shopDataResource, setShopUrl] = useState('http://localhost:3001/categories')
+  // const [shopDataResource, setShopUrl] = useState('/categories')
 
   // State variables to pass to cart-page
-  const [cartId, setCartId] = useState(0)
+  const [cartId, setCartId] = useState(null)
   const [cartItems, setCartItems] = useState([])
-  const [cartItemsResource, setCartUrl] = useState('http://localhost:3001/carts/1')
+  // const [cartItemsResource, setCartUrl] = useState('/carts/1')
   const [itemCount, setItemCount] = useState(0)
 
   // state variable to pass to Shop to know which collection to display
@@ -45,8 +45,7 @@ const App = () => {
       setErrors(data.errors)
     }else{
       await setCurrentUser({id,username})
-      await setCurrentCart(cart)
-      setCartUrl(`http://localhost:3001/carts/1`)
+      await setCartId(cart.id)
       await setCartItems(cart_items)
       history.push('/')
       setErrors([])
@@ -55,49 +54,49 @@ const App = () => {
   
 
   //sets up communication between this app and firebase
-  let unsubscribeFromAuth = null
+  // let unsubscribeFromAuth = null
 
   
-  useEffect(() => {
-    unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      if(user) {
-        setCurrentUser(user);
-      }else{
-        setCurrentUser(null)
-      }
+  // useEffect(() => {
+  //   unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+  //     if(user) {
+  //       setCurrentUser(user);
+  //     }else{
+  //       setCurrentUser(null)
+  //     }
 
-      console.log(user);
-    })
+  //     console.log(user);
+  //   })
 
-    unsubscribeFromAuth();
-  }, [])
+  //   unsubscribeFromAuth();
+  // }, [])
 
 
   // Fetch to populate collections
   useEffect(() => {
-    fetch(shopDataResource)
+    fetch('/categories')
     .then(res => res.json())
     .then(data => setCollection(data))
-  }, [shopDataResource])
-
-  //Fetch to populate cartItems
-  useEffect(() => {
-    
-      fetch(cartItemsResource)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        setCartId(data.id)
-        setCartItems(data.cart_items)
-      })
-      setItemCount(calculateItemsInCart)
-    
   }, [])
 
+  //Fetch to populate cartItems
+  // useEffect(() => {
+    
+  //     fetch(cartItemsResource)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data)
+  //       setCartId(data.id)
+  //       setCartItems(data.cart_items)
+  //     })
+  //     setItemCount(calculateItemsInCart)
+    
+  // }, [])
+
   // Update Item count 
-  useEffect(() => {
-      setItemCount(calculateItemsInCart())
-  }, [cartItems])
+  // useEffect(() => {
+  //     setItemCount(calculateItemsInCart())
+  // }, [cartItems])
 
   const calculateItemsInCart = () => {
     return cartItems.reduce((acc,cartItem) => {
@@ -114,13 +113,14 @@ const App = () => {
     console.log(existingItem)
 
     if(existingItem) {
-      // setItemCount(cartItems.length)
+      setItemCount(cartItems.length)
       const updatedCartItems = cartItems.map(cartItem => {
         return cartItem.item.name === itemToAdd.name ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
       })
       setCartItems(updatedCartItems)
       const configObj = {
         method: 'PATCH',
+        credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -129,9 +129,9 @@ const App = () => {
           quantity: existingItem.quantity + 1
         })
       }
-      fetch(`http://localhost:3001/cart_items/${existingItem.id}`, configObj)
-      // const itemsInCart = calculateItemsInCart()
-      // setItemCount(itemsInCart)
+      fetch(`/cart_items/${existingItem.id}`, configObj)
+      const itemsInCart = calculateItemsInCart()
+      setItemCount(itemsInCart)
     }else {
 
       const configObj = {
@@ -140,18 +140,18 @@ const App = () => {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({...itemToAdd, cart_id: cartId, quantity: 1})
+        body: JSON.stringify({...itemToAdd, quantity: 1})
       }
   
-      fetch("http://localhost:3001/cart_items", configObj)
+      fetch("/cart_items", configObj)
       .then(res => res.json())
       .then(postedItem => updateCartItems(postedItem))
 
       const updateCartItems =  (postedItem) => {
         setCartItems([...cartItems,postedItem])
 
-      // const itemsInCart = calculateItemsInCart()
-      // setItemCount(itemsInCart)
+      const itemsInCart = calculateItemsInCart()
+      setItemCount(itemsInCart)
     }
 
     
@@ -162,7 +162,7 @@ const App = () => {
 
   // function to remove items from cart
    const removeFromCart = async (id) => {
-    const url = `http://localhost:3001/cart_items/${id}`
+    const url = `/cart_items/${id}`
 
     const configObj = {
       method: 'DELETE',
@@ -176,8 +176,8 @@ const App = () => {
 
     removeItem(id)
 
-    // let itemsInCart = calculateItemsInCart()
-    // setItemCount(itemsInCart)
+    let itemsInCart = calculateItemsInCart()
+    setItemCount(itemsInCart)
   }
 
   // Update front end when removing items from cart individually
@@ -210,6 +210,8 @@ const App = () => {
   // const searchedCollections = collections.filter(collection => {
   //   return searchTerm === "" ? collection : collection.title.toLowerCase().includes(searchTerm.toLowerCase())
   // })
+
+  
 
   return (
     <div className="App">

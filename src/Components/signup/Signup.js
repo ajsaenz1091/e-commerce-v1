@@ -28,7 +28,7 @@ const Signup = ({handleUserLoginAndSignup, test}) => {
             },
             body: JSON.stringify(userCredentials)
         }
-        fetch('http://localhost:3001/users', config)
+        fetch('/users', config)
         .then(resp => resp.json())
         .then(data => handleUserLoginAndSignup(data))        
     }

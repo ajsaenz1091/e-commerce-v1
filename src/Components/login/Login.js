@@ -28,7 +28,7 @@ const Login = () => {
             },
             body: JSON.stringify(userCredentials)
         }
-        fetch('http://localhost:3001/login', config)
+        fetch('/login', config)
         .then(resp => resp.json())
         .then(data => console.log(data))
     }

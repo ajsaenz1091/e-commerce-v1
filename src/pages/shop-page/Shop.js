@@ -20,7 +20,7 @@ const Shop = ({collections, addItemToCart, collecId, handleSearch, searchTerm, c
     const renderCollection = () => {
       return collections.filter(collection => {
         return collection.id === collecId
-      }).map(collection => <Collection key={collection.id} {...collection} addItemToCart={addItemToCart}/>)
+      }).map(collection => <Collection cartId={cartId} key={collection.id} {...collection} addItemToCart={addItemToCart}/>)
     }
 
     const handleChange = (e) => {
