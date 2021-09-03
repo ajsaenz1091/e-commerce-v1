@@ -7,11 +7,19 @@ import Home from './home-page/Home'
 import Shop from './shop-page/Shop'
 import Cart from './cart-page/Cart'
 
+import { useHistory } from 'react-router-dom';
+
 import {auth} from '../firebase/firebase.utils'
 
 const App = () => {
 
-  //Store current user in state
+  const history = useHistory()
+
+  // Set errors 
+  const [errors, setErrors] = useState([]);
+
+  //Store current user and cart in state
+  const [currentCart, setCurrentCart] = useState({})
   const [currentUser, setCurrentUser] = useState(null)
 
   // State variables that shop-page will use
@@ -30,13 +38,21 @@ const App = () => {
 
   //Handle User signup and login
 
-  const handleUserLoginAndSignup = (data) => {
-    // data.errors ? setErrors(data.errors) : setCurrentUser(data.user)
-    // if(!data.errors) {
-    //   history.push('/home')
-    //   setErrors([])
-    // }
+  const handleUserLoginAndSignup = async (data) => {
+    console.log(data)
+    const {id, username, cart, cart:{cart_items}} = data
+    if (data.errors){
+      setErrors(data.errors)
+    }else{
+      await setCurrentUser({id,username})
+      await setCurrentCart(cart)
+      setCartUrl(`http://localhost:3001/carts/1`)
+      await setCartItems(cart_items)
+      history.push('/')
+      setErrors([])
+    }
   }
+  
 
   //sets up communication between this app and firebase
   let unsubscribeFromAuth = null
@@ -66,18 +82,21 @@ const App = () => {
 
   //Fetch to populate cartItems
   useEffect(() => {
-    fetch(cartItemsResource)
-    .then(res => res.json())
-    .then(data => {
-      setCartId(data.id)
-      setCartItems(data.cart_items)
-    })
-    setItemCount(calculateItemsInCart)
-  }, [itemCount])
+    
+      fetch(cartItemsResource)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setCartId(data.id)
+        setCartItems(data.cart_items)
+      })
+      setItemCount(calculateItemsInCart)
+    
+  }, [])
 
   // Update Item count 
   useEffect(() => {
-    setItemCount(calculateItemsInCart())
+      setItemCount(calculateItemsInCart())
   }, [cartItems])
 
   const calculateItemsInCart = () => {

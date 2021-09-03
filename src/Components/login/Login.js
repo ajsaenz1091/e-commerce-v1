@@ -6,7 +6,7 @@ import { signInWithGoogle } from '../../firebase/firebase.utils'
 
 import './Login.styles.scss'
 
-const Signup = () => {
+const Login = () => {
     const [userCredentials, setCredentials] = useState({
         email: '',
         password: ''
@@ -20,7 +20,17 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        // fetch('login')
+        let config = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(userCredentials)
+        }
+        fetch('http://localhost:3001/login', config)
+        .then(resp => resp.json())
+        .then(data => console.log(data))
     }
 
     return(
@@ -46,7 +56,7 @@ const Signup = () => {
                     required
                 />
 
-                <CustomButton className='signup-login-button' type='submit' > Sing in </CustomButton>
+                <CustomButton className='signup-login-button' type='submit' > Sign in </CustomButton>
                 <CustomButton style={{backgroundColor: '#0088ff', color: 'white'}} className='signup-login-button' onClick={signInWithGoogle} > 
                     {' '}
                     Sign in with google {' '}
@@ -56,4 +66,4 @@ const Signup = () => {
     )
 }
 
-export default Signup;
+export default Login;

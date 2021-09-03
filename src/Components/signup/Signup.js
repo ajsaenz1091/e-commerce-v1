@@ -4,7 +4,7 @@ import CustomButton from '../custom-button/CustomButton';
 
 import './Signup.styles.scss'
 
-const Signup = ({handleUserLoginAndSignup}) => {
+const Signup = ({handleUserLoginAndSignup, test}) => {
     const [userCredentials, setCredentials] = useState({
         username: '',
         email: '',
@@ -30,8 +30,7 @@ const Signup = ({handleUserLoginAndSignup}) => {
         }
         fetch('http://localhost:3001/users', config)
         .then(resp => resp.json())
-        .then(data => console.log(data))
-        // .then(data => handleUserLoginAndSignup(data))
+        .then(data => handleUserLoginAndSignup(data))        
     }
 
     return(
@@ -64,7 +63,7 @@ const Signup = ({handleUserLoginAndSignup}) => {
                     label='password'
                     required
                 />
-                <CustomButton className='signup-login-button' type='submit' > Sing up </CustomButton>
+                <CustomButton className='signup-login-button' type='submit' > Sign up </CustomButton>
             </form>
         </div>
     )
