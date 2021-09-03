@@ -79,19 +79,30 @@ const App = () => {
     .then(data => setCollection(data))
   }, [])
 
-  //Fetch to populate cartItems
-  // useEffect(() => {
-    
-  //     fetch(cartItemsResource)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data)
-  //       setCartId(data.id)
-  //       setCartItems(data.cart_items)
-  //     })
-  //     setItemCount(calculateItemsInCart)
-    
-  // }, [])
+  //Check if user in session fetch to users show action
+    //Use data to set current user, cartId and cartItems
+  const setStateWithData = async (data) =>{
+    console.log("data",data)
+    const {id, username, cart, cart:{cart_items}} = data
+    if (data.errors){
+      setErrors(data.errors)
+    }else{
+      await setCurrentUser({id,username})
+      await setCartId(cart.id)
+      await setCartItems(cart_items)
+      history.push('/')
+      setErrors([])
+    }
+  }
+  const checkSessionId = () => {
+    fetch('/me')
+    .then(resp => resp.json())
+    .then(data => setStateWithData(data))
+    setItemCount(calculateItemsInCart)
+  }
+  useEffect(() => {
+    checkSessionId()
+  }, [])
 
   // Update Item count 
   // useEffect(() => {
