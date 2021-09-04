@@ -13,20 +13,20 @@ const Header = ({itemCount, currentUser, setCurrentUser}) => {
 
     return (
         <div className="header">
-            <Link className="logo-container" to="/">
+            <Link className="logo-container" to="/home">
                 <Logo className="logo"/>
             </Link>
             <div className="options">
                 {
                     currentUser 
                     ?<Link className='option' to='/logout'>SIGN OUT</Link>
-                    :<Link className='option' to='/signup'>SIGN IN</Link>
+                    :<Link className='option' to='/'>SIGN IN</Link>
                 }
                 <Link to="/shop" className="option">
                     SHOP
                 </Link>
                 <Link to="/cart" className="option">
-                    Cart
+                    {currentUser ? <h4>{currentUser.username}'s Cart</h4> : <p>Cart</p>}
                 </Link>
                 <CartIcon itemCount={itemCount}/>
             </div>

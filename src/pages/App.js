@@ -47,7 +47,7 @@ const App = () => {
       await setCurrentUser({id,username})
       await setCartId(cart.id)
       await setCartItems(cart_items)
-      history.push('/')
+      history.push('/home')
       setErrors([])
     }
   }
@@ -90,7 +90,7 @@ const App = () => {
       await setCurrentUser({id,username})
       await setCartId(cart.id)
       await setCartItems(cart_items)
-      history.push('/')
+      history.push('/home')
       setErrors([])
     }
   }
@@ -226,7 +226,10 @@ const App = () => {
     <div className="App">
       <Header currentUser={currentUser} setCurrentUser={setCurrentUser} itemCount={itemCount}/>
       <Switch>
-        <Route exact path="/signup">
+        {/*<Route exact path="/signup">
+          <SignupLogin handleUserLoginAndSignup={handleUserLoginAndSignup}/>
+        </Route>*/}
+        <Route exact path="/">
           <SignupLogin handleUserLoginAndSignup={handleUserLoginAndSignup}/>
         </Route>
         <Route exact path='/logout'>
@@ -238,8 +241,8 @@ const App = () => {
         <Route path="/shop">
           <Shop collecId={collecId} cartId={cartId} collections={searchedCollections} searchTerm={searchTerm} handleSearch={handleSearch} addItemToCart={addItemToCart}/>
         </Route>
-        <Route exact path="/">
-          <Home setCollectionId={setCollectionId} />
+        <Route exact path="/home">
+          <Home currentUser={currentUser} setCollectionId={setCollectionId} />
         </Route>
       </Switch>
     </div>

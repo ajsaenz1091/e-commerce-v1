@@ -18,7 +18,7 @@ const Logout = ({ setCurrentUser }) => {
     const handleLogout = () => {
         setCurrentUser(null)
         setTimeout(() => {
-            history.push('/signup')
+            history.push('/')
         }, 2000)
     }
 
