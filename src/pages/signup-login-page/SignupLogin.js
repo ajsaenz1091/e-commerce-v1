@@ -12,7 +12,7 @@ const SignupLogin = ({handleUserLoginAndSignup}) => {
 
     return(
         <div className="signup-login">
-            <Login />
+            <Login handleUserLoginAndSignup={handleUserLoginAndSignup}/>
             <h1>Don't have one? Then...</h1>
             <Signup test={test} handleUserLoginAndSignup={handleUserLoginAndSignup}/>
             

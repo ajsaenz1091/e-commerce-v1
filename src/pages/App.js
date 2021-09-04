@@ -6,6 +6,7 @@ import SignupLogin from './signup-login-page/SignupLogin'
 import Home from './home-page/Home'
 import Shop from './shop-page/Shop'
 import Cart from './cart-page/Cart'
+import Logout from '../Components/logout/Logout'
 
 import { useHistory } from 'react-router-dom';
 
@@ -39,11 +40,10 @@ const App = () => {
   //Handle User signup and login
 
   const handleUserLoginAndSignup = async (data) => {
-    console.log(data)
-    const {id, username, cart, cart:{cart_items}} = data
     if (data.errors){
       setErrors(data.errors)
     }else{
+      const {id, username, cart, cart:{cart_items}} = data
       await setCurrentUser({id,username})
       await setCartId(cart.id)
       await setCartItems(cart_items)
@@ -83,10 +83,10 @@ const App = () => {
     //Use data to set current user, cartId and cartItems
   const setStateWithData = async (data) =>{
     console.log("data",data)
-    const {id, username, cart, cart:{cart_items}} = data
     if (data.errors){
       setErrors(data.errors)
     }else{
+      const {id, username, cart, cart:{cart_items}} = data
       await setCurrentUser({id,username})
       await setCartId(cart.id)
       await setCartItems(cart_items)
@@ -98,10 +98,15 @@ const App = () => {
     fetch('/me')
     .then(resp => resp.json())
     .then(data => setStateWithData(data))
-    setItemCount(calculateItemsInCart)
   }
+
+  useEffect( () => 
+    currentUser ? setItemCount(calculateItemsInCart) : null ,
+    [cartItems])
+
   useEffect(() => {
     checkSessionId()
+    // setItemCount(calculateItemsInCart)
   }, [])
 
   // Update Item count 
@@ -156,17 +161,10 @@ const App = () => {
   
       fetch("/cart_items", configObj)
       .then(res => res.json())
-      .then(postedItem => updateCartItems(postedItem))
-
-      const updateCartItems =  (postedItem) => {
-        setCartItems([...cartItems,postedItem])
+      .then(postedItem => setCartItems([...cartItems,postedItem]))
 
       const itemsInCart = calculateItemsInCart()
       setItemCount(itemsInCart)
-    }
-
-    
-    
   }
     // setCartItems(checkIfItemInCart(itemToAdd))
 }
@@ -230,6 +228,9 @@ const App = () => {
       <Switch>
         <Route exact path="/signup">
           <SignupLogin handleUserLoginAndSignup={handleUserLoginAndSignup}/>
+        </Route>
+        <Route exact path='/logout'>
+            <Logout setCurrentUser={setCurrentUser}/>
         </Route>
         <Route exact path="/cart">
           <Cart cartItems={cartItems} removeFromCart={removeFromCart}/>

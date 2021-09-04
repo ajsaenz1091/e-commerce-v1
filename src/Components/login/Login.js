@@ -6,7 +6,7 @@ import { signInWithGoogle } from '../../firebase/firebase.utils'
 
 import './Login.styles.scss'
 
-const Login = () => {
+const Login = ({handleUserLoginAndSignup}) => {
     const [userCredentials, setCredentials] = useState({
         email: '',
         password: ''
@@ -30,7 +30,7 @@ const Login = () => {
         }
         fetch('/login', config)
         .then(resp => resp.json())
-        .then(data => console.log(data))
+        .then(data => handleUserLoginAndSignup(data))
     }
 
     return(
